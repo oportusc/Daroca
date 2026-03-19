@@ -1,6 +1,8 @@
 import { Outlet, Link, useLocation } from "react-router";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Instagram, Mail, MessageCircle } from "lucide-react";
 import { useState } from "react";
+import logo from "../../assets/logo_daroca_azul.png"
+import logo2 from "../../assets/logo_arena_2.png"
 
 export function Layout() {
   const location = useLocation();
@@ -19,6 +21,14 @@ export function Layout() {
     }
     return location.pathname.startsWith(path);
   };
+  const whatsappNumber = "56987297888";
+  const whatsappMessage = "Hola! Me gustaría hacer una cotización para mi evento.";
+
+  const handleWhatsAppClick = () => {
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+    // const url = `https://wa.me/c/56987297888`;
+    window.open(url, '_blank');
+  };
 
   return (
     <div className="min-h-screen flex flex-col" style={{ fontFamily: "var(--font-body)" }}>
@@ -28,16 +38,11 @@ export function Layout() {
           <div className="flex justify-between items-center h-20">
             {/* Logo */}
             <Link to="/" className="flex items-center">
-              <h1 
-                className="text-3xl sm:text-4xl"
-                style={{ 
-                  fontFamily: "var(--font-heading)",
-                  color: "var(--primary)",
-                  fontWeight: 600
-                }}
-              >
-                Daroca Eventos
-              </h1>
+              <img
+                className="w-auto h-20"
+                src={logo}
+                alt="logo_daroca"
+              />
             </Link>
 
             {/* Desktop Navigation */}
@@ -108,55 +113,63 @@ export function Layout() {
       </main>
 
       {/* Footer */}
-      <footer 
+      <footer
         className="py-12 mt-20"
         style={{ backgroundColor: "var(--primary)", color: "var(--primary-foreground)" }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <h3 
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+            <div className="hidden md:block">
+              <h3
                 className="text-2xl mb-4"
                 style={{ fontFamily: "var(--font-heading)", fontWeight: 600 }}
               >
                 Daroca Eventos
               </h3>
               <p className="opacity-90">
-                Creando momentos inolvidables para tus celebraciones más especiales.
+                Banquetería para matrimonios, graduaciones, coffee breaks y eventos corporativos.
               </p>
             </div>
             <div>
-              <h4 
-                className="text-xl mb-4"
-                style={{ fontFamily: "var(--font-heading)", fontWeight: 600 }}
-              >
-                Enlaces Rápidos
-              </h4>
-              <ul className="space-y-2">
-                {navItems.map((item) => (
-                  <li key={item.path}>
-                    <Link
-                      to={item.path}
-                      className="opacity-90 hover:opacity-100 transition-opacity"
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <img
+                className="w-auto h-36"
+                src={logo2}
+                alt="logo_daroca"
+              />
             </div>
             <div>
-              <h4 
+              <h4
                 className="text-xl mb-4"
                 style={{ fontFamily: "var(--font-heading)", fontWeight: 600 }}
               >
                 Contacto
               </h4>
-              <p className="opacity-90">
-                Email: info@darocaeventos.com
-                <br />
-                Teléfono: +56 9 1234 5678
-              </p>
+              <div className="flex-col justify-items-start">
+                <div className="flex gap-2 items-center">
+                  <Mail className="w-6 h-6 opacity-50" />
+                  <p className="opacity-90">
+                    contacto.daroca@gmail.com
+                  </p>
+                </div>
+                <div className="flex gap-2 items-center py-1 cursor-pointer" onClick={handleWhatsAppClick}>
+                  <MessageCircle className="w-6 h-6 opacity-50" />
+                  <p className="opacity-90">
+                    +56 9 8729 7888
+                  </p>
+                </div>
+                <div className="flex gap-2 items-center">
+                  <a
+                    href="https://www.instagram.com/darocaeventos/"
+                    target="_blank"
+                    className="flex gap-2 items-center">
+
+                    <Instagram className="w-6 h-6 opacity-50" />
+                    <p className="opacity-90">
+                      instagram.com/darocaeventos
+                    </p>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-white/20 text-center opacity-90">
