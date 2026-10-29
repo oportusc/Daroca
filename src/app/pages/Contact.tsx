@@ -11,7 +11,11 @@ interface ContactForm {
   eventDate: string;
   guestCount: string;
   message: string;
+  "bot-field"?: string;
 }
+
+// Debe coincidir con el nombre del formulario oculto en index.html
+const NETLIFY_FORM_NAME = "contacto";
 
 export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,18 +23,33 @@ export function Contact() {
 
   const onSubmit = async (data: ContactForm) => {
     setIsSubmitting(true);
-    
-    // Simulamos el envío del formulario
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    console.log("Form data:", data);
-    
-    toast.success("¡Mensaje enviado con éxito!", {
-      description: "Nos pondremos en contacto contigo pronto."
-    });
-    
-    reset();
-    setIsSubmitting(false);
+
+    try {
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          "form-name": NETLIFY_FORM_NAME,
+          ...data,
+          "bot-field": data["bot-field"] ?? "",
+        }).toString(),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}`);
+      }
+
+      toast.success("¡Mensaje enviado con éxito!", {
+        description: "Nos pondremos en contacto contigo pronto."
+      });
+      reset();
+    } catch {
+      toast.error("No pudimos enviar tu mensaje", {
+        description: "Por favor intenta nuevamente o contáctanos por WhatsApp."
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -133,6 +152,14 @@ export function Contact() {
             </h2>
             
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              {/* Honeypot: campo invisible para atrapar bots */}
+              <p className="hidden" aria-hidden="true">
+                <label>
+                  No llenar este campo:
+                  <input {...register("bot-field")} tabIndex={-1} autoComplete="off" />
+                </label>
+              </p>
+
               {/* Name */}
               <div>
                 <label 
