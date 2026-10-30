@@ -6,10 +6,9 @@ import { site } from "../config/site";
 
 import mesas from "../assets/imagenes/mesas_puesta_sol.webp";
 import coffee from "../assets/imagenes/coffee_galletas_2.webp";
-import mesaCerca from "../assets/imagenes/mesa_cerca.webp";
+import mesa from "../assets/imagenes/mesa.webp";
 import mesasGaleria from "../assets/imagenes/mesas_3.webp";
-import coffeeGalletas from "../assets/imagenes/coffee_galletas_2.webp";
-import mesaGaleria from "../assets/imagenes/mesa_2.webp";
+import coffeeGaleria from "../assets/imagenes/coffee_2.webp";
 
 const features = [
   {
@@ -35,9 +34,9 @@ const features = [
 ];
 
 const galleryPreview = [
-  { src: mesasGaleria, alt: "Mesas decoradas para un evento al aire libre" },
-  { src: coffeeGalletas, alt: "Coffee break con galletas y café" },
-  { src: mesaGaleria, alt: "Mesa decorada para banquete" },
+  { src: mesasGaleria, alt: "Vista general de una recepción bajo carpa con mesas redondas" },
+  { src: coffeeGaleria, alt: "Mesa de café con tazas, cucharas y galletas" },
+  { src: mesa, alt: "Mesa con servilletas en abanico, copas y centro floral" },
 ];
 
 // Cada imagen del hero ocupa un tercio del ancho en escritorio y todo el ancho en celular
@@ -49,7 +48,7 @@ const heroWidths = [480, 800, 1200];
   <section class="relative w-full h-[85vh] grid grid-cols-1 md:grid-cols-3 overflow-hidden">
     {/* Imágenes */}
     <Image
-      src={mesaCerca}
+      src={mesa}
       alt="Banquetería para eventos en la Quinta Región"
       widths={heroWidths}
       sizes="33vw"

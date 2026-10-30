@@ -2,20 +2,25 @@
 import { Image, getImage } from "astro:assets";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { galleryImages } from "../data/gallery";
+import { galleryEvents } from "../data/gallery";
 
 // Versión grande para el visor (se descarga solo al abrir la foto)
-const images = await Promise.all(
-  galleryImages.map(async (image) => ({
-    ...image,
-    full: await getImage({ src: image.src, width: 1200 }),
+const events = await Promise.all(
+  galleryEvents.map(async (event) => ({
+    ...event,
+    images: await Promise.all(
+      event.images.map(async (image) => ({
+        ...image,
+        full: await getImage({ src: image.src, width: 1200 }),
+      }))
+    ),
   }))
 );
 ---
 
 <BaseLayout
   title="Galería de Eventos | Daroca Eventos"
-  description="Fotos de nuestros eventos: montajes de mesas, coffee breaks y barras para matrimonios, graduaciones y eventos corporativos en la Quinta Región."
+  description="Fotos de nuestros eventos: montajes de mesas, centros florales y coffee breaks para matrimonios, graduaciones y eventos corporativos en la Quinta Región."
 >
   <div class="py-16 px-4">
     <div class="max-w-7xl mx-auto">
@@ -33,25 +38,41 @@ const images = await Promise.all(
         <div class="w-24 h-1 mx-auto mt-6" style="background-color: var(--secondary)"></div>
       </div>
 
-      {/* Grid */}
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {images.map((image, index) => (
-          <button
-            type="button"
-            class="gallery-item relative aspect-[3/4] overflow-hidden rounded-lg shadow-lg cursor-zoom-in"
-            data-index={index}
-            data-full={image.full.src}
-            data-alt={image.alt}
-            aria-label={`Ver foto: ${image.alt}`}
-          >
-            <Image
-              src={image.src}
-              alt={image.alt}
-              widths={[300, 450, 600]}
-              sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-              class="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
-            />
-          </button>
+      {/* Un bloque por evento */}
+      <div class="space-y-20">
+        {events.map((event, eventIndex) => (
+          <section>
+            <div class="mb-8">
+              <h2
+                class="text-3xl md:text-4xl mb-2"
+                style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
+              >
+                {event.title}
+              </h2>
+              <p class="text-lg" style="color: var(--foreground)">{event.description}</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {event.images.map((image) => (
+                <button
+                  type="button"
+                  class="gallery-item relative aspect-[3/4] overflow-hidden rounded-lg shadow-lg cursor-zoom-in"
+                  data-group={eventIndex}
+                  data-full={image.full.src}
+                  data-alt={image.alt}
+                  aria-label={`Ver foto: ${image.alt}`}
+                >
+                  <Image
+                    src={image.src}
+                    alt={image.alt}
+                    widths={[300, 450, 600]}
+                    sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
+                    class="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
+                  />
+                </button>
+              ))}
+            </div>
+          </section>
         ))}
       </div>
     </div>
@@ -96,7 +117,9 @@ const images = await Promise.all(
   <script>
     const dialog = document.getElementById("lightbox") as HTMLDialogElement | null;
     const lightboxImage = document.getElementById("lightbox-image") as HTMLImageElement | null;
-    const items = Array.from(document.querySelectorAll<HTMLButtonElement>(".gallery-item"));
+    const allItems = Array.from(document.querySelectorAll<HTMLButtonElement>(".gallery-item"));
+    // Las flechas recorren solo las fotos del evento que se abrió
+    let items: HTMLButtonElement[] = [];
     let current = 0;
 
     const show = (index: number) => {
@@ -107,9 +130,10 @@ const images = await Promise.all(
       lightboxImage.alt = item.dataset.alt ?? "";
     };
 
-    items.forEach((item, index) => {
+    allItems.forEach((item) => {
       item.addEventListener("click", () => {
-        show(index);
+        items = allItems.filter((other) => other.dataset.group === item.dataset.group);
+        show(items.indexOf(item));
         dialog?.showModal();
       });
     });
