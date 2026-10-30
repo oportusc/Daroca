@@ -5,3 +5,5 @@ dist
 .env.*
 brag-output
 .taste-skill
+# Videos generados con /brag
+brag/
