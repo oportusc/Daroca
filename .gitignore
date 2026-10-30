@@ -3,3 +3,5 @@ dist
 .astro
 .env
 .env.*
+brag-output
+.taste-skill

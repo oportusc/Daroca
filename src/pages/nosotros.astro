@@ -2,17 +2,7 @@
 import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-// Fotos de stock (Unsplash): reemplazar por fotos propias cuando estén disponibles
-const images = [
-  {
-    src: "https://images.unsplash.com/photo-1578366941741-9e517759c620?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBjYXRlcmluZyUyMHRlYW18ZW58MXx8fHwxNzczNDA2OTE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
-    alt: "Equipo profesional de banquetería",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1698280954292-c955f882486f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwdGFibGUlMjBzZXR0aW5nfGVufDF8fHx8MTc3MzQwNjkxNXww&ixlib=rb-4.1.0&q=80&w=1080",
-    alt: "Mesa elegante preparada para un evento",
-  },
-];
+import nosotrosImg from "../assets/imagenes/nosotros.webp";
 
 const values = [
   {
@@ -80,19 +70,14 @@ const values = [
           </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-6">
-          {images.map((image) => (
-            <div class="relative h-64 overflow-hidden rounded-lg shadow-lg">
-              <Image
-                src={image.src}
-                alt={image.alt}
-                inferSize
-                widths={[600, 1000]}
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                class="w-full h-full object-cover"
-              />
-            </div>
-          ))}
+        <div class="relative h-80 lg:h-auto overflow-hidden rounded-lg shadow-lg">
+          <Image
+            src={nosotrosImg}
+            alt="Integrante del equipo de Daroca Eventos con delantal bordado, en un montaje de ceremonia al aire libre"
+            widths={[600, 1000]}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            class="w-full h-full object-cover object-[50%_30%] lg:absolute lg:inset-0"
+          />
         </div>
       </div>
 
