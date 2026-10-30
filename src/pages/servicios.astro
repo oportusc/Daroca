@@ -1,0 +1,179 @@
+---
+import { Image } from "astro:assets";
+import { Heart, GraduationCap, Briefcase, Cake, Coffee } from "lucide-react";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// Las imágenes son fotos de stock (Unsplash): reemplazar por fotos propias cuando estén disponibles
+const services = [
+  {
+    icon: Heart,
+    title: "Matrimonios",
+    description: "Hacemos realidad el día más especial de tu vida. Desde banquetes íntimos hasta grandes celebraciones, nos encargamos de cada detalle para que tu boda sea perfecta. Menús personalizados, decoración elegante y servicio impecable.",
+    image: "https://images.unsplash.com/photo-1767986012547-3fc29b18339f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxlbGVnYW50JTIwd2VkZGluZyUyMHJlY2VwdGlvbnxlbnwxfHx8fDE3NzM0MDY5MTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    features: ["Menú personalizado", "Decoración incluida", "Servicio de meseros", "Coordinación del evento"],
+  },
+  {
+    icon: GraduationCap,
+    title: "Graduaciones",
+    description: "Celebra tu logro académico con estilo. Ofrecemos opciones tanto para ceremonias formales como para fiestas más casuales. Buffets variados, cócteles y postres especiales para hacer de este momento algo inolvidable.",
+    image: "https://images.unsplash.com/photo-1758682016284-78f5266d5743?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmFkdWF0aW9uJTIwY2VsZWJyYXRpb24lMjBwYXJ0eXxlbnwxfHx8fDE3NzM0MDY5MTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    features: ["Buffet variado", "Opciones vegetarianas", "Torta de graduación", "Bebidas incluidas"],
+  },
+  {
+    icon: Briefcase,
+    title: "Eventos Empresa",
+    description: "Servicios profesionales para eventos corporativos, lanzamientos de productos, conferencias y reuniones de negocios. Menús ejecutivos, coffee breaks y cenas de gala que impresionarán a tus invitados.",
+    image: "https://images.unsplash.com/photo-1543283864-0eba98564bd4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb3Jwb3JhdGUlMjBidXNpbmVzcyUyMGV2ZW50fGVufDF8fHx8MTc3MzM2MzM1MXww&ixlib=rb-4.1.0&q=80&w=1080",
+    features: ["Menús ejecutivos", "Coffee breaks", "Servicio premium", "Logística completa"],
+  },
+  {
+    icon: Cake,
+    title: "Cumpleaños",
+    description: "Desde celebraciones infantiles hasta fiestas de adultos, creamos experiencias únicas adaptadas a tu estilo y preferencias. Tortas personalizadas, decoración temática y menús para todos los gustos.",
+    image: "https://images.unsplash.com/photo-1650584997985-e713a869ee77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiaXJ0aGRheSUyMHBhcnR5JTIwY2VsZWJyYXRpb258ZW58MXx8fHwxNzczMzQ4MTQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    features: ["Tortas personalizadas", "Decoración temática", "Animación opcional", "Menú flexible"],
+  },
+  {
+    icon: Coffee,
+    title: "Coffee Break",
+    description: "Pausas perfectas para tus reuniones, seminarios o talleres. Variedad de cafés gourmet, tés, pastelería fresca, frutas y snacks saludables. Ideal para mantener a tus asistentes energizados y concentrados.",
+    image: "https://images.unsplash.com/photo-1670781875897-5a5d20d97b94?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjb2ZmZWUlMjBicmVhayUyMGNhdGVyaW5nfGVufDF8fHx8MTc3MzQwNjkxNHww&ixlib=rb-4.1.0&q=80&w=1080",
+    features: ["Café gourmet", "Pastelería fresca", "Opciones saludables", "Servicio rápido"],
+  },
+];
+---
+
+<BaseLayout
+  title="Servicios de Banquetería | Daroca Eventos"
+  description="Banquetería para matrimonios, graduaciones, eventos de empresa, cumpleaños y coffee breaks en Villa Alemana, Viña del Mar, Valparaíso y la Quinta Región."
+>
+  <div class="py-16 px-4">
+    <div class="max-w-7xl mx-auto">
+      {/* Header */}
+      <div class="text-center mb-16">
+        <h1
+          class="text-5xl md:text-6xl mb-6"
+          style="font-family: var(--font-heading); color: var(--primary); font-weight: 700"
+        >
+          Nuestros Servicios
+        </h1>
+        <p class="text-xl max-w-3xl mx-auto" style="color: var(--foreground)">
+          Ofrecemos una amplia gama de servicios de banquetería para hacer de tu evento
+          una experiencia memorable
+        </p>
+        <div class="w-24 h-1 mx-auto mt-6" style="background-color: var(--secondary)"></div>
+      </div>
+
+      {/* Services Grid */}
+      <div class="space-y-16">
+        {services.map((service, index) => {
+          const Icon = service.icon;
+          const isEven = index % 2 === 0;
+
+          return (
+            <div
+              class:list={[
+                "grid grid-cols-1 lg:grid-cols-2 gap-8 items-center",
+                { "lg:grid-flow-dense": !isEven },
+              ]}
+            >
+              {/* Image */}
+              <div
+                class:list={[
+                  "relative h-96 overflow-hidden rounded-lg shadow-xl",
+                  { "lg:col-start-2": !isEven },
+                ]}
+              >
+                <Image
+                  src={service.image}
+                  alt={service.title}
+                  inferSize
+                  widths={[600, 1000]}
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  class="w-full h-full object-cover"
+                />
+                <div
+                  class="absolute inset-0"
+                  style="background: linear-gradient(to top, rgba(42, 143, 143, 0.3), transparent)"
+                ></div>
+              </div>
+
+              {/* Content */}
+              <div class:list={[{ "lg:col-start-1 lg:row-start-1": !isEven }]}>
+                <div
+                  class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4"
+                  style="background-color: var(--secondary)"
+                >
+                  <Icon className="w-8 h-8" style={{ color: "var(--primary)" }} />
+                </div>
+
+                <h2
+                  class="text-3xl md:text-4xl mb-4"
+                  style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
+                >
+                  {service.title}
+                </h2>
+
+                <p class="text-lg mb-6" style="color: var(--foreground)">
+                  {service.description}
+                </p>
+
+                <div class="mb-6">
+                  <h3
+                    class="text-lg mb-3"
+                    style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
+                  >
+                    Incluye:
+                  </h3>
+                  <ul class="space-y-2">
+                    {service.features.map((feature) => (
+                      <li class="flex items-center" style="color: var(--foreground)">
+                        <span
+                          class="w-2 h-2 rounded-full mr-3"
+                          style="background-color: var(--primary)"
+                        ></span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <a
+                  href="/contactanos"
+                  class="inline-block px-6 py-3 rounded-lg transition-all hover:shadow-lg"
+                  style="background-color: var(--primary); color: var(--primary-foreground); font-family: var(--font-body); font-weight: 600"
+                >
+                  Solicitar Cotización
+                </a>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* CTA Section */}
+      <div
+        class="mt-20 py-16 px-8 rounded-lg text-center"
+        style="background-color: var(--secondary)"
+      >
+        <h2
+          class="text-3xl md:text-4xl mb-4"
+          style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
+        >
+          ¿No encuentras lo que buscas?
+        </h2>
+        <p class="text-lg mb-6 max-w-2xl mx-auto" style="color: var(--foreground)">
+          También ofrecemos servicios personalizados para eventos especiales.
+          Contáctanos y cuéntanos sobre tu proyecto.
+        </p>
+        <a
+          href="/contactanos"
+          class="inline-block px-8 py-4 rounded-lg transition-all transform hover:scale-105"
+          style="background-color: var(--primary); color: var(--primary-foreground); font-family: var(--font-body); font-weight: 600"
+        >
+          Contáctanos
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

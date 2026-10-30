@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Página no encontrada | Daroca Eventos">
+  <div class="py-24 px-4 text-center">
+    <h1
+      class="text-5xl md:text-6xl mb-6"
+      style="font-family: var(--font-heading); color: var(--primary); font-weight: 700"
+    >
+      Página no encontrada
+    </h1>
+    <p class="text-xl mb-8" style="color: var(--foreground)">
+      La página que buscas no existe o fue movida.
+    </p>
+    <a
+      href="/"
+      class="inline-block px-8 py-4 rounded-lg transition-all transform hover:scale-105"
+      style="background-color: var(--primary); color: var(--primary-foreground); font-family: var(--font-body); font-weight: 600"
+    >
+      Volver al inicio
+    </a>
+  </div>
+</BaseLayout>

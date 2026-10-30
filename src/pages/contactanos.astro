@@ -1,0 +1,181 @@
+---
+import { MapPin, Phone, Mail } from "lucide-react";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { ContactForm } from "../components/ContactForm";
+import { site } from "../config/site";
+
+const contactInfo = [
+  {
+    icon: MapPin,
+    title: "Ubicación",
+    content: site.location,
+  },
+  {
+    icon: Phone,
+    title: "Teléfono",
+    content: site.phone,
+    href: site.phoneHref,
+  },
+  {
+    icon: Mail,
+    title: "Email",
+    content: site.email,
+    href: `mailto:${site.email}`,
+  },
+];
+
+const reasons = [
+  "Cotización gratuita y sin compromiso",
+  "Asesoría personalizada para tu evento",
+  "Respuesta en menos de 24 horas",
+  "Flexibilidad en fechas y servicios",
+];
+---
+
+<BaseLayout
+  title="Contáctanos y Cotiza tu Evento | Daroca Eventos"
+  description="Cotiza la banquetería de tu matrimonio, graduación, coffee break o evento corporativo en la Quinta Región. Escríbenos y te respondemos en menos de 24 horas."
+>
+  {/*
+    Formulario oculto para que Netlify Forms detecte el formulario de contacto al compilar.
+    Los campos deben coincidir con los de src/components/ContactForm.tsx
+  */}
+  <form name="contacto" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="tel" name="phone" />
+    <input type="text" name="eventType" />
+    <input type="date" name="eventDate" />
+    <input type="number" name="guestCount" />
+    <textarea name="message"></textarea>
+    <input type="text" name="bot-field" />
+  </form>
+
+  <div class="py-16 px-4">
+    <div class="max-w-7xl mx-auto">
+      {/* Header */}
+      <div class="text-center mb-16">
+        <h1
+          class="text-5xl md:text-6xl mb-6"
+          style="font-family: var(--font-heading); color: var(--primary); font-weight: 700"
+        >
+          Contáctanos
+        </h1>
+        <p class="text-xl max-w-3xl mx-auto" style="color: var(--foreground)">
+          Estamos aquí para ayudarte a planificar tu evento perfecto.
+          Completa el formulario y nos pondremos en contacto contigo pronto.
+        </p>
+        <div class="w-24 h-1 mx-auto mt-6" style="background-color: var(--secondary)"></div>
+      </div>
+
+      {/* Contact Info Cards */}
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        {contactInfo.map((info) => {
+          const Icon = info.icon;
+          return (
+            <div class="p-6 rounded-lg text-center shadow-lg" style="background-color: white">
+              <div
+                class="inline-flex items-center justify-center w-14 h-14 rounded-full mb-4"
+                style="background-color: var(--secondary)"
+              >
+                <Icon className="w-7 h-7" style={{ color: "var(--primary)" }} />
+              </div>
+              <h3
+                class="text-xl mb-2"
+                style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
+              >
+                {info.title}
+              </h3>
+              {info.href ? (
+                <a href={info.href} style="color: var(--foreground)">{info.content}</a>
+              ) : (
+                <p style="color: var(--foreground)">{info.content}</p>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Contact Form */}
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        {/* Form */}
+        <div class="p-8 rounded-lg shadow-xl" style="background-color: white">
+          <h2
+            class="text-3xl mb-6"
+            style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
+          >
+            Solicita tu Cotización
+          </h2>
+
+          <ContactForm client:load />
+        </div>
+
+        {/* Info Section */}
+        <div class="space-y-8">
+          <div class="p-8 rounded-lg" style="background-color: var(--secondary)">
+            <h3
+              class="text-2xl mb-4"
+              style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
+            >
+              ¿Por qué contactarnos?
+            </h3>
+            <ul class="space-y-3" style="color: var(--foreground)">
+              {reasons.map((reason) => (
+                <li class="flex items-start">
+                  <span
+                    class="w-2 h-2 rounded-full mr-3 mt-2"
+                    style="background-color: var(--primary)"
+                  ></span>
+                  <span>{reason}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="p-8 rounded-lg" style="background-color: white">
+            <h3
+              class="text-2xl mb-4"
+              style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
+            >
+              Horario de Atención
+            </h3>
+            <div class="space-y-2" style="color: var(--foreground)">
+              <p class="flex justify-between">
+                <span>Lunes - Viernes:</span>
+                <span>9:00 - 19:00</span>
+              </p>
+              <p class="flex justify-between">
+                <span>Sábados:</span>
+                <span>10:00 - 14:00</span>
+              </p>
+              <p class="flex justify-between">
+                <span>Domingos:</span>
+                <span>Cerrado</span>
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="p-8 rounded-lg"
+            style="background-color: var(--primary); color: var(--primary-foreground)"
+          >
+            <h3 class="text-2xl mb-4" style="font-family: var(--font-heading); font-weight: 600">
+              ¿Prefieres llamarnos?
+            </h3>
+            <p class="mb-4">
+              Nuestro equipo está listo para atenderte y responder todas tus consultas.
+            </p>
+            <a
+              href={site.phoneHref}
+              class="inline-block px-6 py-3 rounded-lg transition-all"
+              style="background-color: var(--secondary); color: var(--secondary-foreground); font-family: var(--font-body); font-weight: 600"
+            >
+              <Phone className="inline-block w-5 h-5 mr-2" />
+              Llamar Ahora
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

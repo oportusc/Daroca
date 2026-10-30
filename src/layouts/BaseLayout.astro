@@ -1,0 +1,252 @@
+---
+import { Image, getImage } from "astro:assets";
+import { Menu, X, Instagram, Mail, MessageCircle } from "lucide-react";
+import { site, navItems } from "../config/site";
+import "../styles/index.css";
+
+import logo from "../assets/logo_daroca_azul.png";
+import logoFooter from "../assets/logo_arena_2.png";
+import faviconSrc from "../assets/logo_daroca_fondo_azul.jpg";
+import defaultOgImage from "../assets/imagenes/mesas_puesta_sol.webp";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = site.description } = Astro.props;
+
+// Al compilar, la ruta llega como "/nosotros.html" o "/index.html"; se normaliza a "/nosotros" o "/"
+const currentPath =
+  Astro.url.pathname.replace(/\.html$/, "").replace(/(^|\/)index$/, "").replace(/\/$/, "") || "/";
+const canonicalUrl = new URL(currentPath, Astro.site);
+
+const isActive = (path: string) =>
+  path === "/" ? currentPath === "/" : currentPath.startsWith(path);
+
+const favicon = await getImage({ src: faviconSrc, width: 96, format: "png" });
+const ogImage = await getImage({ src: defaultOgImage, width: 1200, height: 630, format: "jpg" });
+const ogImageUrl = new URL(ogImage.src, Astro.site);
+
+// Datos estructurados para que Google y los buscadores de IA entiendan el negocio
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: site.name,
+  description: site.description,
+  url: Astro.site?.toString(),
+  image: ogImageUrl.toString(),
+  telephone: site.phone,
+  email: site.email,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: site.city,
+    addressRegion: site.region,
+    addressCountry: "CL",
+  },
+  areaServed: ["Villa Alemana", "Viña del Mar", "Valparaíso", "Quinta Región"],
+  sameAs: [site.instagramUrl],
+};
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/png" href={favicon.src} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph (para redes sociales) -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:locale" content="es_CL" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Lora:wght@400;500;600;700&display=swap"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+
+  <body>
+    <div class="min-h-screen flex flex-col" style="font-family: var(--font-body)">
+      {/* Topbar */}
+      <header class="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between items-center h-20">
+            {/* Logo */}
+            <a href="/" class="flex items-center">
+              <Image
+                src={logo}
+                alt="Daroca Eventos"
+                height={80}
+                densities={[1, 2]}
+                loading="eager"
+                class="w-auto h-20"
+              />
+            </a>
+
+            {/* Desktop Navigation */}
+            <div class="hidden md:flex space-x-8">
+              {navItems.map((item) => (
+                <a
+                  href={item.path}
+                  class="relative py-2 transition-colors"
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    color: isActive(item.path) ? "var(--primary)" : "var(--foreground)",
+                    fontWeight: isActive(item.path) ? 600 : 400,
+                  }}
+                  aria-current={isActive(item.path) ? "page" : undefined}
+                >
+                  {item.name}
+                  {isActive(item.path) && (
+                    <span
+                      class="absolute bottom-0 left-0 right-0 h-0.5"
+                      style="background-color: var(--primary)"
+                    />
+                  )}
+                </a>
+              ))}
+            </div>
+
+            {/* Mobile menu button */}
+            <button
+              id="mobile-menu-button"
+              class="md:hidden p-2"
+              aria-label="Abrir menú"
+              aria-expanded="false"
+              aria-controls="mobile-menu"
+            >
+              <span data-icon="open">
+                <Menu className="h-6 w-6" style={{ color: "var(--primary)" }} />
+              </span>
+              <span data-icon="close" class="hidden">
+                <X className="h-6 w-6" style={{ color: "var(--primary)" }} />
+              </span>
+            </button>
+          </div>
+
+          {/* Mobile Navigation */}
+          <div id="mobile-menu" class="md:hidden pb-4 hidden">
+            {navItems.map((item) => (
+              <a
+                href={item.path}
+                class="block py-3 px-4 rounded-lg transition-colors"
+                style={{
+                  fontFamily: "var(--font-body)",
+                  color: isActive(item.path) ? "var(--primary)" : "var(--foreground)",
+                  backgroundColor: isActive(item.path) ? "var(--secondary)" : "transparent",
+                  fontWeight: isActive(item.path) ? 600 : 400,
+                }}
+                aria-current={isActive(item.path) ? "page" : undefined}
+              >
+                {item.name}
+              </a>
+            ))}
+          </div>
+        </nav>
+      </header>
+
+      {/* Main Content */}
+      <main class="flex-1">
+        <slot />
+      </main>
+
+      {/* Footer */}
+      <footer
+        class="py-12 mt-20"
+        style="background-color: var(--primary); color: var(--primary-foreground)"
+      >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+            <div class="hidden md:block">
+              <h3
+                class="text-2xl mb-4"
+                style="font-family: var(--font-heading); font-weight: 600"
+              >
+                {site.name}
+              </h3>
+              <p class="opacity-90">
+                Banquetería para matrimonios, graduaciones, coffee breaks y eventos corporativos.
+              </p>
+            </div>
+            <div>
+              <Image
+                src={logoFooter}
+                alt="Daroca Eventos"
+                height={144}
+                densities={[1, 2]}
+                class="w-auto h-36"
+              />
+            </div>
+            <div>
+              <h4
+                class="text-xl mb-4"
+                style="font-family: var(--font-heading); font-weight: 600"
+              >
+                Contacto
+              </h4>
+              <div class="flex-col justify-items-start">
+                <a href={`mailto:${site.email}`} class="flex gap-2 items-center">
+                  <Mail className="w-6 h-6 opacity-50" />
+                  <p class="opacity-90">{site.email}</p>
+                </a>
+                <a
+                  href={site.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex gap-2 items-center py-1"
+                >
+                  <MessageCircle className="w-6 h-6 opacity-50" />
+                  <p class="opacity-90">{site.phone}</p>
+                </a>
+                <a
+                  href={site.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex gap-2 items-center"
+                >
+                  <Instagram className="w-6 h-6 opacity-50" />
+                  <p class="opacity-90">{site.instagramLabel}</p>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="mt-8 pt-8 border-t border-white/20 text-center opacity-90">
+            <p>&copy; {new Date().getFullYear()} {site.name}. Todos los derechos reservados.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const button = document.getElementById("mobile-menu-button");
+      const menu = document.getElementById("mobile-menu");
+
+      button?.addEventListener("click", () => {
+        const isOpen = button.getAttribute("aria-expanded") === "true";
+        button.setAttribute("aria-expanded", String(!isOpen));
+        button.setAttribute("aria-label", isOpen ? "Abrir menú" : "Cerrar menú");
+        menu?.classList.toggle("hidden", isOpen);
+        button.querySelector('[data-icon="open"]')?.classList.toggle("hidden", !isOpen);
+        button.querySelector('[data-icon="close"]')?.classList.toggle("hidden", isOpen);
+      });
+    </script>
+  </body>
+</html>
