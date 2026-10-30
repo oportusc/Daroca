@@ -26,6 +26,20 @@ const eventTypes = [
   "Otro",
 ];
 
+// Campo suave: al hacer foco toma borde teal con un halo, nunca negro
+const fieldBase =
+  "w-full px-4 py-3 rounded-xl border-[1.5px] bg-[var(--background)] outline-none appearance-none " +
+  "transition-[border-color,box-shadow,background-color] duration-200 focus:bg-white";
+const fieldOk =
+  "border-[var(--muted)] hover:border-[#bfbaa6] focus:border-[var(--primary)] focus:shadow-[0_0_0_4px_rgba(42,143,143,0.18)]";
+const fieldError =
+  "border-[var(--destructive)] focus:shadow-[0_0_0_4px_rgba(212,24,61,0.15)]";
+
+const fieldClass = (hasError?: boolean) => `${fieldBase} ${hasError ? fieldError : fieldOk}`;
+
+const labelClass = "block mb-2 font-medium";
+const errorClass = "mt-1 text-sm text-[var(--destructive)]";
+
 export function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ContactFormData>();
@@ -63,7 +77,7 @@ export function ContactForm() {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-5" noValidate>
         {/* Honeypot: campo invisible para atrapar bots */}
         <p className="hidden" aria-hidden="true">
           <label>
@@ -74,220 +88,124 @@ export function ContactForm() {
 
         {/* Name */}
         <div>
-          <label 
-            htmlFor="name" 
-            className="block mb-2"
-            style={{ color: "var(--foreground)" }}
-          >
-            Nombre Completo *
-          </label>
+          <label htmlFor="name" className={labelClass}>Nombre *</label>
           <input
-            {...register("name", { required: "El nombre es requerido" })}
+            {...register("name", { required: "Escribe tu nombre" })}
             type="text"
             id="name"
-            className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2"
-            style={{ 
-              borderColor: errors.name ? "var(--destructive)" : "var(--border)",
-              backgroundColor: "var(--input-background)",
-            }}
+            autoComplete="name"
+            className={fieldClass(!!errors.name)}
             placeholder="Juan Pérez"
           />
-          {errors.name && (
-            <p className="mt-1 text-sm" style={{ color: "var(--destructive)" }}>
-              {errors.name.message}
-            </p>
-          )}
-        </div>
-
-        {/* Email */}
-        <div>
-          <label 
-            htmlFor="email" 
-            className="block mb-2"
-            style={{ color: "var(--foreground)" }}
-          >
-            Email *
-          </label>
-          <input
-            {...register("email", { 
-              required: "El email es requerido",
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Email inválido"
-              }
-            })}
-            type="email"
-            id="email"
-            className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2"
-            style={{ 
-              borderColor: errors.email ? "var(--destructive)" : "var(--border)",
-              backgroundColor: "var(--input-background)",
-            }}
-            placeholder="juan@ejemplo.com"
-          />
-          {errors.email && (
-            <p className="mt-1 text-sm" style={{ color: "var(--destructive)" }}>
-              {errors.email.message}
-            </p>
-          )}
+          {errors.name && <p className={errorClass}>{errors.name.message}</p>}
         </div>
 
         {/* Phone */}
         <div>
-          <label 
-            htmlFor="phone" 
-            className="block mb-2"
-            style={{ color: "var(--foreground)" }}
-          >
-            Teléfono *
-          </label>
+          <label htmlFor="phone" className={labelClass}>Teléfono *</label>
           <input
-            {...register("phone", { required: "El teléfono es requerido" })}
+            {...register("phone", { required: "Escribe un teléfono para llamarte" })}
             type="tel"
             id="phone"
-            className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2"
-            style={{ 
-              borderColor: errors.phone ? "var(--destructive)" : "var(--border)",
-              backgroundColor: "var(--input-background)",
-            }}
+            autoComplete="tel"
+            className={fieldClass(!!errors.phone)}
             placeholder="+56 9 1234 5678"
           />
-          {errors.phone && (
-            <p className="mt-1 text-sm" style={{ color: "var(--destructive)" }}>
-              {errors.phone.message}
-            </p>
-          )}
+          {errors.phone && <p className={errorClass}>{errors.phone.message}</p>}
+        </div>
+
+        {/* Email */}
+        <div className="sm:col-span-2">
+          <label htmlFor="email" className={labelClass}>Correo *</label>
+          <input
+            {...register("email", {
+              required: "Escribe tu correo",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Revisa el correo, falta algo"
+              }
+            })}
+            type="email"
+            id="email"
+            autoComplete="email"
+            className={fieldClass(!!errors.email)}
+            placeholder="juan@ejemplo.com"
+          />
+          {errors.email && <p className={errorClass}>{errors.email.message}</p>}
         </div>
 
         {/* Event Type */}
         <div>
-          <label 
-            htmlFor="eventType" 
-            className="block mb-2"
-            style={{ color: "var(--foreground)" }}
-          >
-            Tipo de Evento *
-          </label>
+          <label htmlFor="eventType" className={labelClass}>Tipo de evento *</label>
           <select
-            {...register("eventType", { required: "Selecciona un tipo de evento" })}
+            {...register("eventType", { required: "Elige el tipo de evento" })}
             id="eventType"
-            className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2"
-            style={{ 
-              borderColor: errors.eventType ? "var(--destructive)" : "var(--border)",
-              backgroundColor: "var(--input-background)",
-            }}
+            className={`${fieldClass(!!errors.eventType)} pr-11 bg-no-repeat bg-[position:right_1rem_center] bg-[url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='14'%20height='9'%3E%3Cpath%20d='M1%201l6%206%206-6'%20fill='none'%20stroke='%232a8f8f'%20stroke-width='2'/%3E%3C/svg%3E")]`}
           >
-            <option value="">Selecciona una opción</option>
+            <option value="">Elige uno</option>
             {eventTypes.map((type) => (
               <option key={type} value={type}>
                 {type}
               </option>
             ))}
           </select>
-          {errors.eventType && (
-            <p className="mt-1 text-sm" style={{ color: "var(--destructive)" }}>
-              {errors.eventType.message}
-            </p>
-          )}
+          {errors.eventType && <p className={errorClass}>{errors.eventType.message}</p>}
         </div>
 
         {/* Event Date */}
         <div>
-          <label 
-            htmlFor="eventDate" 
-            className="block mb-2"
-            style={{ color: "var(--foreground)" }}
-          >
-            Fecha del Evento *
-          </label>
+          <label htmlFor="eventDate" className={labelClass}>Fecha del evento *</label>
           <input
-            {...register("eventDate", { required: "La fecha es requerida" })}
+            {...register("eventDate", { required: "Elige la fecha" })}
             type="date"
             id="eventDate"
-            className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2"
-            style={{ 
-              borderColor: errors.eventDate ? "var(--destructive)" : "var(--border)",
-              backgroundColor: "var(--input-background)",
-            }}
+            className={fieldClass(!!errors.eventDate)}
           />
-          {errors.eventDate && (
-            <p className="mt-1 text-sm" style={{ color: "var(--destructive)" }}>
-              {errors.eventDate.message}
-            </p>
-          )}
+          {errors.eventDate && <p className={errorClass}>{errors.eventDate.message}</p>}
         </div>
 
         {/* Guest Count */}
-        <div>
-          <label 
-            htmlFor="guestCount" 
-            className="block mb-2"
-            style={{ color: "var(--foreground)" }}
-          >
-            Cantidad de Invitados *
-          </label>
+        <div className="sm:col-span-2">
+          <label htmlFor="guestCount" className={labelClass}>Invitados aproximados</label>
           <input
-            {...register("guestCount", { required: "La cantidad de invitados es requerida" })}
+            {...register("guestCount")}
             type="number"
             id="guestCount"
-            className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2"
-            style={{ 
-              borderColor: errors.guestCount ? "var(--destructive)" : "var(--border)",
-              backgroundColor: "var(--input-background)",
-            }}
-            placeholder="50"
-            min="1"
+            min={1}
+            className={fieldClass()}
+            placeholder="80"
           />
-          {errors.guestCount && (
-            <p className="mt-1 text-sm" style={{ color: "var(--destructive)" }}>
-              {errors.guestCount.message}
-            </p>
-          )}
         </div>
 
         {/* Message */}
-        <div>
-          <label 
-            htmlFor="message" 
-            className="block mb-2"
-            style={{ color: "var(--foreground)" }}
-          >
-            Mensaje
-          </label>
+        <div className="sm:col-span-2">
+          <label htmlFor="message" className={labelClass}>Cuéntanos más</label>
           <textarea
             {...register("message")}
             id="message"
             rows={4}
-            className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 resize-none"
-            style={{ 
-              borderColor: "var(--border)",
-              backgroundColor: "var(--input-background)",
-            }}
-            placeholder="Cuéntanos más detalles sobre tu evento..."
+            className={`${fieldClass()} resize-y`}
+            placeholder="Lugar, horario, estilo, menú que imaginas…"
           />
         </div>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full px-6 py-4 rounded-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-          style={{ 
-            backgroundColor: "var(--primary)",
-            color: "var(--primary-foreground)",
-            fontFamily: "var(--font-body)",
-            fontWeight: 600
-          }}
-        >
-          {isSubmitting ? (
-            <>Enviando...</>
-          ) : (
-            <>
-              <Send className="w-5 h-5" />
-              Enviar Solicitud
-            </>
-          )}
-        </button>
+        <div className="sm:col-span-2">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full font-semibold text-white bg-[var(--primary)] hover:bg-[#1f6b6b] active:scale-[0.97] transition-[background-color,transform] duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-[var(--primary)]"
+          >
+            {isSubmitting ? (
+              <>Enviando...</>
+            ) : (
+              <>
+                <Send className="w-5 h-5" />
+                Enviar solicitud
+              </>
+            )}
+          </button>
+        </div>
       </form>
       <Toaster position="top-right" richColors />
     </>

@@ -5,7 +5,6 @@ import { site, navItems } from "../config/site";
 import "../styles/index.css";
 
 import logo from "../assets/logo_daroca_azul.png";
-import logoFooter from "../assets/logo_arena_2.png";
 import faviconSrc from "../assets/logo_daroca_fondo_azul.jpg";
 import defaultOgImage from "../assets/imagenes/mesas_puesta_sol.webp";
 
@@ -169,66 +168,54 @@ const jsonLd = {
       </main>
 
       {/* Footer */}
-      <footer
-        class="py-12 mt-20"
-        style="background-color: var(--primary); color: var(--primary-foreground)"
-      >
+      <footer class="mt-16" style="background-color: white; color: var(--foreground)">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
-            <div class="hidden md:block">
-              <h3
-                class="text-2xl mb-4"
-                style="font-family: var(--font-heading); font-weight: 600"
-              >
-                {site.name}
-              </h3>
-              <p class="opacity-90">
-                Banquetería para matrimonios, graduaciones, coffee breaks y eventos corporativos.
+          <div class="py-8 flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-10">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 lg:mr-auto">
+              <a href="/" class="shrink-0">
+                <Image
+                  src={logo}
+                  alt="Daroca Eventos"
+                  height={80}
+                  densities={[1, 2]}
+                  class="w-auto h-20"
+                />
+              </a>
+              <p class="max-w-[34ch] text-[15px]">
+                Banquetería para matrimonios, graduaciones, coffee breaks y eventos de empresa.
               </p>
             </div>
-            <div>
-              <Image
-                src={logoFooter}
-                alt="Daroca Eventos"
-                height={144}
-                densities={[1, 2]}
-                class="w-auto h-36"
-              />
-            </div>
-            <div>
-              <h4
-                class="text-xl mb-4"
-                style="font-family: var(--font-heading); font-weight: 600"
+
+            <div class="flex flex-wrap gap-3">
+              <a
+                href={site.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-pill"
               >
-                Contacto
-              </h4>
-              <div class="flex-col justify-items-start">
-                <a href={`mailto:${site.email}`} class="flex gap-2 items-center">
-                  <Mail className="w-6 h-6 opacity-50" />
-                  <p class="opacity-90">{site.email}</p>
-                </a>
-                <a
-                  href={site.whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex gap-2 items-center py-1"
-                >
-                  <MessageCircle className="w-6 h-6 opacity-50" />
-                  <p class="opacity-90">{site.phone}</p>
-                </a>
-                <a
-                  href={site.instagramUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="flex gap-2 items-center"
-                >
-                  <Instagram className="w-6 h-6 opacity-50" />
-                  <p class="opacity-90">{site.instagramLabel}</p>
-                </a>
-              </div>
+                <MessageCircle className="w-[18px] h-[18px]" />
+                {site.phone}
+              </a>
+              <a href={`mailto:${site.email}`} class="footer-pill">
+                <Mail className="w-[18px] h-[18px]" />
+                {site.email}
+              </a>
+              <a
+                href={site.instagramUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-pill"
+              >
+                <Instagram className="w-[18px] h-[18px]" />
+                {site.instagramHandle}
+              </a>
             </div>
           </div>
-          <div class="mt-8 pt-8 border-t border-white/20 text-center opacity-90">
+
+          <div
+            class="py-4 text-center text-sm"
+            style="color: #4a4a46; box-shadow: inset 0 1px 0 rgba(42, 143, 143, 0.15)"
+          >
             <p>&copy; {new Date().getFullYear()} {site.name}. Todos los derechos reservados.</p>
           </div>
         </div>
@@ -250,3 +237,23 @@ const jsonLd = {
     </script>
   </body>
 </html>
+
+<style>
+  .footer-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-size: 0.95rem;
+    transition: background-color 0.2s, transform 0.15s;
+  }
+  .footer-pill:hover {
+    background: #1f6b6b;
+  }
+  .footer-pill:active {
+    transform: scale(0.97);
+  }
+</style>

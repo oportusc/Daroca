@@ -1,34 +1,12 @@
 ---
-import { MapPin, Phone, Mail } from "lucide-react";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { ContactForm } from "../components/ContactForm";
 import { site } from "../config/site";
 
-const contactInfo = [
-  {
-    icon: MapPin,
-    title: "Ubicación",
-    content: site.location,
-  },
-  {
-    icon: Phone,
-    title: "Teléfono",
-    content: site.phone,
-    href: site.phoneHref,
-  },
-  {
-    icon: Mail,
-    title: "Email",
-    content: site.email,
-    href: `mailto:${site.email}`,
-  },
-];
-
-const reasons = [
-  "Cotización gratuita y sin compromiso",
-  "Asesoría personalizada para tu evento",
-  "Respuesta en menos de 24 horas",
-  "Flexibilidad en fechas y servicios",
+const hours = [
+  { days: "Lunes a viernes", time: "9:00 – 19:00" },
+  { days: "Sábados", time: "10:00 – 14:00" },
+  { days: "Domingos", time: "Cerrado" },
 ];
 ---
 
@@ -51,131 +29,177 @@ const reasons = [
     <input type="text" name="bot-field" />
   </form>
 
-  <div class="py-16 px-4">
-    <div class="max-w-7xl mx-auto">
-      {/* Header */}
-      <div class="text-center mb-16">
-        <h1
-          class="text-5xl md:text-6xl mb-6"
-          style="font-family: var(--font-heading); color: var(--primary); font-weight: 700"
-        >
-          Contáctanos
-        </h1>
-        <p class="text-xl max-w-3xl mx-auto" style="color: var(--foreground)">
-          Estamos aquí para ayudarte a planificar tu evento perfecto.
-          Completa el formulario y nos pondremos en contacto contigo pronto.
-        </p>
-        <div class="w-24 h-1 mx-auto mt-6" style="background-color: var(--secondary)"></div>
-      </div>
+  <section class="contact">
+    <div class="wrap">
+      <header class="head">
+        <h1>Hablemos de tu evento</h1>
+        <p class="lead">Cotización gratis y sin compromiso. Respondemos en menos de 24 horas.</p>
+      </header>
 
-      {/* Contact Info Cards */}
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-        {contactInfo.map((info) => {
-          const Icon = info.icon;
-          return (
-            <div class="p-6 rounded-lg text-center shadow-lg" style="background-color: white">
-              <div
-                class="inline-flex items-center justify-center w-14 h-14 rounded-full mb-4"
-                style="background-color: var(--secondary)"
-              >
-                <Icon className="w-7 h-7" style={{ color: "var(--primary)" }} />
-              </div>
-              <h3
-                class="text-xl mb-2"
-                style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
-              >
-                {info.title}
-              </h3>
-              {info.href ? (
-                <a href={info.href} style="color: var(--foreground)">{info.content}</a>
-              ) : (
-                <p style="color: var(--foreground)">{info.content}</p>
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Contact Form */}
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* Form */}
-        <div class="p-8 rounded-lg shadow-xl" style="background-color: white">
-          <h2
-            class="text-3xl mb-6"
-            style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
-          >
-            Solicita tu Cotización
-          </h2>
-
-          <ContactForm client:load />
-        </div>
-
-        {/* Info Section */}
-        <div class="space-y-8">
-          <div class="p-8 rounded-lg" style="background-color: var(--secondary)">
-            <h3
-              class="text-2xl mb-4"
-              style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
-            >
-              ¿Por qué contactarnos?
-            </h3>
-            <ul class="space-y-3" style="color: var(--foreground)">
-              {reasons.map((reason) => (
-                <li class="flex items-start">
-                  <span
-                    class="w-2 h-2 rounded-full mr-3 mt-2"
-                    style="background-color: var(--primary)"
-                  ></span>
-                  <span>{reason}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div class="p-8 rounded-lg" style="background-color: white">
-            <h3
-              class="text-2xl mb-4"
-              style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
-            >
-              Horario de Atención
-            </h3>
-            <div class="space-y-2" style="color: var(--foreground)">
-              <p class="flex justify-between">
-                <span>Lunes - Viernes:</span>
-                <span>9:00 - 19:00</span>
-              </p>
-              <p class="flex justify-between">
-                <span>Sábados:</span>
-                <span>10:00 - 14:00</span>
-              </p>
-              <p class="flex justify-between">
-                <span>Domingos:</span>
-                <span>Cerrado</span>
-              </p>
-            </div>
-          </div>
-
-          <div
-            class="p-8 rounded-lg"
-            style="background-color: var(--primary); color: var(--primary-foreground)"
-          >
-            <h3 class="text-2xl mb-4" style="font-family: var(--font-heading); font-weight: 600">
-              ¿Prefieres llamarnos?
-            </h3>
-            <p class="mb-4">
-              Nuestro equipo está listo para atenderte y responder todas tus consultas.
-            </p>
-            <a
-              href={site.phoneHref}
-              class="inline-block px-6 py-3 rounded-lg transition-all"
-              style="background-color: var(--secondary); color: var(--secondary-foreground); font-family: var(--font-body); font-weight: 600"
-            >
-              <Phone className="inline-block w-5 h-5 mr-2" />
-              Llamar Ahora
+      <div class="grid">
+        {/* Datos de contacto */}
+        <aside class="info">
+          <h2>Datos de contacto</h2>
+          <div class="ways">
+            <a href={site.whatsappUrl} target="_blank" rel="noopener noreferrer">
+              <small>WhatsApp o llamada</small>
+              <span>{site.phone}</span>
             </a>
+            <a href={`mailto:${site.email}`}>
+              <small>Correo</small>
+              <span>{site.email}</span>
+            </a>
+            <div>
+              <small>Dónde estamos</small>
+              <span>{site.location}</span>
+            </div>
           </div>
+
+          <div class="hours">
+            <h3>Horario de atención</h3>
+            {hours.map((h) => (
+              <p><span>{h.days}</span><span>{h.time}</span></p>
+            ))}
+          </div>
+        </aside>
+
+        {/* Formulario */}
+        <div class="form-card">
+          <h2>Pide tu cotización</h2>
+          <p class="note">Los campos con * son obligatorios.</p>
+          <ContactForm client:load />
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .contact {
+    padding-block: 4rem;
+  }
+  .wrap {
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2rem);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    color: #1f6b6b;
+  }
+
+  .head {
+    margin-bottom: 2.5rem;
+  }
+  .head h1 {
+    font-size: clamp(2.5rem, 4.2vw, 3.75rem);
+  }
+  .lead {
+    font-size: 1.125rem;
+    margin-top: 1rem;
+    max-width: 62ch;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  /* Cuadro de datos: arena, con el horario en blanco */
+  .info {
+    background: var(--primary);
+    color: #fff;
+    border-radius: 24px;
+    padding: 2.25rem 2rem;
+  }
+  .info h2,
+  .info h3 {
+    color: #fff;
+  }
+  .info h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .ways {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin-bottom: 2rem;
+  }
+  .ways small {
+    display: block;
+    font-size: 0.9rem;
+    opacity: 0.85;
+  }
+  /* Lora en vez de Cormorant: sus números van alineados y se leen mejor */
+  .ways span {
+    display: block;
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.3;
+    font-variant-numeric: lining-nums;
+    overflow-wrap: anywhere;
+  }
+  .ways a:hover span {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .hours {
+    background: #1f6b6b;
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+  }
+  .hours h3 {
+    font-size: 1.35rem;
+    margin-bottom: 0.6rem;
+  }
+  .hours p {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  /* Cuadro del formulario */
+  .form-card {
+    background: #fff;
+    border-radius: 24px;
+    padding: 2.25rem 2.5rem 2.5rem;
+  }
+  .form-card h2 {
+    font-size: clamp(1.9rem, 2.6vw, 2.4rem);
+    margin-bottom: 0.5rem;
+  }
+  .note {
+    font-size: 0.95rem;
+    color: #4a4a46;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 1023px) {
+    .contact {
+      padding-top: 3rem;
+    }
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    .form-card {
+      order: -1;
+    }
+  }
+  @media (max-width: 560px) {
+    .info,
+    .form-card {
+      padding: 1.75rem 1.25rem;
+    }
+  }
+</style>

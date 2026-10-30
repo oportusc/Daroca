@@ -15,7 +15,7 @@ export const site = {
   city: "Villa Alemana",
   region: "Valparaíso",
   instagramUrl: "https://www.instagram.com/darocaeventos/",
-  instagramLabel: "instagram.com/darocaeventos",
+  instagramHandle: "@darocaeventos",
   whatsappUrl: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`,
 };
 

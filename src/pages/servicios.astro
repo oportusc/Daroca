@@ -1,37 +1,37 @@
 ---
 import { Image } from "astro:assets";
-import { Heart, GraduationCap, Briefcase, Coffee } from "lucide-react";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import matrimonio from "../assets/imagenes/servicio_matrimonio.webp";
 import coffeeBreak from "../assets/imagenes/servicio_coffee_break.webp";
+import principal from "../assets/imagenes/servicios_principal.webp";
 
 // Eventos Empresa y Graduaciones usan fotos de stock (Unsplash): reemplazar por fotos propias cuando estén disponibles
 const services = [
   {
-    icon: Heart,
     title: "Matrimonios",
-    description: "Hacemos realidad el día más especial de tu vida. Desde banquetes íntimos hasta grandes celebraciones, nos encargamos de cada detalle para que tu boda sea perfecta. Menús personalizados, decoración elegante y servicio impecable.",
+    forWho: "Para el día más importante, íntimo o con cientos de invitados.",
+    description: "Hacemos realidad el día más especial de tu vida. Nos encargamos de cada detalle del banquete: menús personalizados, decoración elegante y un servicio impecable.",
     image: matrimonio,
     features: ["Menú personalizado", "Decoración incluida", "Servicio de meseros", "Coordinación del evento"],
   },
   {
-    icon: Coffee,
     title: "Coffee Break",
-    description: "Pausas perfectas para tus reuniones, seminarios o talleres. Variedad de cafés gourmet, tés, pastelería fresca, frutas y snacks saludables. Ideal para mantener a tus asistentes energizados y concentrados.",
+    forWho: "Para reuniones, seminarios y talleres que necesitan una buena pausa.",
+    description: "Variedad de cafés gourmet, tés, pastelería fresca, frutas y snacks saludables. Ideal para mantener a tus asistentes energizados y concentrados.",
     image: coffeeBreak,
     features: ["Café gourmet", "Pastelería fresca", "Opciones saludables", "Servicio rápido"],
   },
   {
-    icon: Briefcase,
     title: "Eventos Empresa",
-    description: "Servicios profesionales para eventos corporativos, lanzamientos de productos, conferencias y reuniones de negocios. Menús ejecutivos, coffee breaks y cenas de gala que impresionarán a tus invitados.",
+    forWho: "Para lanzamientos, conferencias, reuniones y cenas de gala.",
+    description: "Servicios profesionales para eventos corporativos. Menús ejecutivos, coffee breaks y cenas de gala que impresionarán a tus invitados, con la logística resuelta.",
     image: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&q=80&w=1080",
     features: ["Menús ejecutivos", "Coffee breaks", "Servicio premium", "Logística completa"],
   },
   {
-    icon: GraduationCap,
     title: "Graduaciones",
-    description: "Celebra tu logro académico con estilo. Ofrecemos opciones tanto para ceremonias formales como para fiestas más casuales. Buffets variados, cócteles y postres especiales para hacer de este momento algo inolvidable.",
+    forWho: "Para ceremonias formales o fiestas más relajadas.",
+    description: "Celebra tu logro académico con estilo. Buffets variados, cócteles y postres especiales para hacer de este momento algo inolvidable.",
     image: "https://images.unsplash.com/photo-1758682016275-59c2dd2e0aee?auto=format&fit=crop&q=80&w=1080",
     imagePosition: "center 25%",
     features: ["Buffet variado", "Opciones vegetarianas", "Torta de graduación", "Bebidas incluidas"],
@@ -43,134 +43,264 @@ const services = [
   title="Servicios de Banquetería | Daroca Eventos"
   description="Banquetería para matrimonios, graduaciones, eventos de empresa y coffee breaks en Villa Alemana, Viña del Mar, Valparaíso y la Quinta Región."
 >
-  <div class="py-16 px-4">
-    <div class="max-w-7xl mx-auto">
-      {/* Header */}
-      <div class="text-center mb-16">
-        <h1
-          class="text-5xl md:text-6xl mb-6"
-          style="font-family: var(--font-heading); color: var(--primary); font-weight: 700"
-        >
-          Nuestros Servicios
-        </h1>
-        <p class="text-xl max-w-3xl mx-auto" style="color: var(--foreground)">
-          Ofrecemos una amplia gama de servicios de banquetería para hacer de tu evento
-          una experiencia memorable
+  {/* Hero */}
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1>Banquetería para cada celebración</h1>
+        <p class="hero-text">
+          Matrimonios, coffee breaks, eventos de empresa y graduaciones en Villa Alemana,
+          Viña del Mar, Valparaíso y toda la Quinta Región.
         </p>
-        <div class="w-24 h-1 mx-auto mt-6" style="background-color: var(--secondary)"></div>
+        <a href="/contactanos" class="btn">Cotizar mi evento</a>
       </div>
-
-      {/* Services Grid */}
-      <div class="space-y-16">
-        {services.map((service, index) => {
-          const Icon = service.icon;
-          const isEven = index % 2 === 0;
-
-          return (
-            <div
-              class:list={[
-                "grid grid-cols-1 lg:grid-cols-2 gap-8 items-center",
-                { "lg:grid-flow-dense": !isEven },
-              ]}
-            >
-              {/* Image */}
-              <div
-                class:list={[
-                  "relative h-96 overflow-hidden rounded-lg shadow-xl",
-                  { "lg:col-start-2": !isEven },
-                ]}
-              >
-                <Image
-                  src={service.image}
-                  alt={service.title}
-                  inferSize
-                  widths={[600, 1000]}
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                  class="w-full h-full object-cover"
-                  style={service.imagePosition && `object-position: ${service.imagePosition}`}
-                />
-                <div
-                  class="absolute inset-0"
-                  style="background: linear-gradient(to top, rgba(42, 143, 143, 0.3), transparent)"
-                ></div>
-              </div>
-
-              {/* Content */}
-              <div class:list={[{ "lg:col-start-1 lg:row-start-1": !isEven }]}>
-                <div
-                  class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4"
-                  style="background-color: var(--secondary)"
-                >
-                  <Icon className="w-8 h-8" style={{ color: "var(--primary)" }} />
-                </div>
-
-                <h2
-                  class="text-3xl md:text-4xl mb-4"
-                  style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
-                >
-                  {service.title}
-                </h2>
-
-                <p class="text-lg mb-6" style="color: var(--foreground)">
-                  {service.description}
-                </p>
-
-                <div class="mb-6">
-                  <h3
-                    class="text-lg mb-3"
-                    style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
-                  >
-                    Incluye:
-                  </h3>
-                  <ul class="space-y-2">
-                    {service.features.map((feature) => (
-                      <li class="flex items-center" style="color: var(--foreground)">
-                        <span
-                          class="w-2 h-2 rounded-full mr-3"
-                          style="background-color: var(--primary)"
-                        ></span>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <a
-                  href="/contactanos"
-                  class="inline-block px-6 py-3 rounded-lg transition-all hover:shadow-lg"
-                  style="background-color: var(--primary); color: var(--primary-foreground); font-family: var(--font-body); font-weight: 600"
-                >
-                  Solicitar Cotización
-                </a>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* CTA Section */}
-      <div
-        class="mt-20 py-16 px-8 rounded-lg text-center"
-        style="background-color: var(--secondary)"
-      >
-        <h2
-          class="text-3xl md:text-4xl mb-4"
-          style="font-family: var(--font-heading); color: var(--primary); font-weight: 600"
-        >
-          ¿No encuentras lo que buscas?
-        </h2>
-        <p class="text-lg mb-6 max-w-2xl mx-auto" style="color: var(--foreground)">
-          También ofrecemos servicios personalizados para eventos especiales.
-          Contáctanos y cuéntanos sobre tu proyecto.
-        </p>
-        <a
-          href="/contactanos"
-          class="inline-block px-8 py-4 rounded-lg transition-all transform hover:scale-105"
-          style="background-color: var(--primary); color: var(--primary-foreground); font-family: var(--font-body); font-weight: 600"
-        >
-          Contáctanos
-        </a>
-      </div>
+      <figure class="hero-img">
+        <Image
+          src={principal}
+          alt="Panel de fotos junto a la piscina en un evento atendido por Daroca"
+          widths={[500, 900]}
+          sizes="(min-width: 1024px) 45vw, 100vw"
+          loading="eager"
+        />
+      </figure>
     </div>
-  </div>
+  </section>
+
+  {/* Servicios: una fila por servicio, con fondos alternados */}
+  {services.map((service) => (
+    <article class="row">
+      <div class="wrap row-grid">
+        <div>
+          <h2>{service.title}</h2>
+          <p class="for-who">{service.forWho}</p>
+        </div>
+
+        <div>
+          <p class="row-text">{service.description}</p>
+          <ul class="features">
+            {service.features.map((feature) => <li>{feature}</li>)}
+          </ul>
+          <a href="/contactanos" class="btn btn-ghost">
+            Cotizar {service.title.toLowerCase()}
+          </a>
+        </div>
+
+        <figure class="row-img">
+          <Image
+            src={service.image}
+            alt={service.title}
+            inferSize
+            widths={[500, 900]}
+            sizes="(min-width: 1024px) 30vw, 100vw"
+            style={service.imagePosition && `object-position: ${service.imagePosition}`}
+          />
+        </figure>
+      </div>
+    </article>
+  ))}
+
+  {/* Cierre */}
+  <section class="close">
+    <div class="wrap close-grid">
+      <div>
+        <h2>¿Tu evento es distinto?</h2>
+        <p>
+          Cumpleaños, bautizos, aniversarios o algo que no aparece aquí.
+          Cuéntanos y armamos una propuesta a tu medida.
+        </p>
+      </div>
+      <a href="/contactanos" class="btn">Contarnos mi idea</a>
+    </div>
+  </section>
 </BaseLayout>
+
+<style>
+  .wrap {
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 2rem);
+  }
+
+  h1,
+  h2 {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    color: var(--primary);
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.85rem 1.6rem;
+    border-radius: 999px;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-weight: 600;
+    transition: background-color 0.2s, color 0.2s, transform 0.15s;
+  }
+  .btn:hover {
+    background: #1f6b6b;
+  }
+  .btn:active {
+    transform: scale(0.97);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--foreground);
+    box-shadow: inset 0 0 0 2px var(--foreground);
+  }
+  .btn-ghost:hover {
+    background: var(--foreground);
+    color: #fff;
+  }
+
+  /* Hero */
+  .hero {
+    padding-block: 4rem 5rem;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5rem;
+    align-items: center;
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 4.6vw, 4rem);
+  }
+  .hero-text {
+    font-size: 1.125rem;
+    margin: 1.5rem 0 2rem;
+    max-width: 40ch;
+  }
+  .hero-img {
+    aspect-ratio: 4 / 5;
+    max-height: 560px;
+    width: 100%;
+    border-radius: 240px 240px 0 0;
+    overflow: hidden;
+  }
+  .hero-img img,
+  .row-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Filas de servicios */
+  .row {
+    padding-block: 4.5rem;
+  }
+  .row:nth-of-type(odd) {
+    background: #fff;
+  }
+  .row:nth-of-type(even) {
+    background: var(--secondary);
+  }
+  .row-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 0.9fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  .row h2 {
+    font-size: clamp(2.25rem, 3.6vw, 3.25rem);
+  }
+  .for-who {
+    font-size: 1.0625rem;
+    margin-top: 1rem;
+    max-width: 28ch;
+    color: #4a4a46;
+  }
+  .row-text {
+    font-size: 1.0625rem;
+  }
+  .features {
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem 1.25rem;
+    margin: 1.5rem 0 1.75rem;
+  }
+  .features li {
+    position: relative;
+    padding-left: 1.25rem;
+  }
+  .features li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+  }
+  .row-img {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  .row-img img {
+    transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .row:hover .row-img img {
+    transform: scale(1.04);
+  }
+
+  /* Cierre */
+  /* Fondo claro: así no choca con el footer teal */
+  .close {
+    padding-block: 4.5rem;
+  }
+  .close-grid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .close h2 {
+    font-size: clamp(2rem, 3.2vw, 2.75rem);
+  }
+  .close p {
+    font-size: 1.0625rem;
+    margin-top: 0.75rem;
+    max-width: 48ch;
+  }
+
+  @media (max-width: 1023px) {
+    .hero-grid,
+    .row-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero {
+      padding-block: 3rem;
+    }
+    .hero-img {
+      aspect-ratio: 1 / 1;
+      max-height: 460px;
+    }
+    .row {
+      padding-block: 3rem;
+    }
+    .row-img {
+      aspect-ratio: 16 / 10;
+      order: -1;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .features {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn,
+    .row-img img {
+      transition: none;
+    }
+  }
+</style>
