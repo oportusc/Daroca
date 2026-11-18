@@ -19,6 +19,17 @@ export const site = {
   whatsappUrl: `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`,
 };
 
+// Herramientas de medición. Si un ID queda vacío, esa herramienta no se carga.
+// Los scripts solo se cargan en el sitio publicado (npm run build), no en `npm run dev`.
+export const analytics = {
+  // Google Analytics 4: ID de medición, tipo "G-XXXXXXXXXX"
+  gaId: "G-XB2KG5VRPV",
+  // Microsoft Clarity: ID del proyecto, tipo "abcd1234ef"
+  clarityId: "zflvnbk0da",
+  // Google Search Console: solo el valor "content" de la etiqueta meta de verificación
+  searchConsoleToken: "zKe4Ajsx5936gnKYYoxpolUIp3JbiB697Yt7lXuY_5k",
+};
+
 export const navItems = [
   { name: "Inicio", path: "/" },
   { name: "Nosotros", path: "/nosotros" },

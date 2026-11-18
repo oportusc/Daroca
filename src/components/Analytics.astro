@@ -1,0 +1,62 @@
+---
+// Etiquetas de Google Analytics, Microsoft Clarity y verificación de Search Console.
+// Va dentro del <head> de BaseLayout.
+//
+// Sin permiso de cookies, GA y Clarity miden de forma anónima y sin cookies
+// ("Consent Mode" de Google y modo sin cookies de Clarity). Al aceptar, miden completo.
+import { analytics } from "../config/site";
+
+const { gaId, clarityId, searchConsoleToken } = analytics;
+const isProd = import.meta.env.PROD;
+---
+
+{searchConsoleToken && <meta name="google-site-verification" content={searchConsoleToken} />}
+
+{
+  isProd && gaId && (
+    <>
+      <script is:inline define:vars={{ gaId }}>
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+          window.dataLayer.push(arguments);
+        };
+        var saved = null;
+        try {
+          saved = localStorage.getItem("daroca-cookies");
+        } catch (e) {}
+        window.gtag("consent", "default", {
+          analytics_storage: saved === "granted" ? "granted" : "denied",
+          ad_storage: "denied",
+          ad_user_data: "denied",
+          ad_personalization: "denied",
+        });
+        window.gtag("js", new Date());
+        window.gtag("config", gaId);
+      </script>
+      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+    </>
+  )
+}
+
+{
+  isProd && clarityId && (
+    <script is:inline define:vars={{ clarityId }}>
+      (function (c, l, a, r, i, t, y) {
+        c[a] = c[a] || function () {
+          (c[a].q = c[a].q || []).push(arguments);
+        };
+        t = l.createElement(r);
+        t.async = 1;
+        t.src = "https://www.clarity.ms/tag/" + i;
+        y = l.getElementsByTagName(r)[0];
+        y.parentNode.insertBefore(t, y);
+      })(window, document, "clarity", "script", clarityId);
+      var saved = null;
+      try {
+        saved = localStorage.getItem("daroca-cookies");
+      } catch (e) {}
+      if (saved === "granted") window.clarity("consent");
+      else if (saved === "denied") window.clarity("consent", false);
+    </script>
+  )
+}

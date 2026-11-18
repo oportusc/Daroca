@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Send } from "lucide-react";
 import { toast, Toaster } from "sonner";
+import { trackEvent } from "../scripts/analytics";
 
 interface ContactFormData {
   name: string;
@@ -61,6 +62,9 @@ export function ContactForm() {
       if (!response.ok) {
         throw new Error(`Error ${response.status}`);
       }
+
+      // "generate_lead" es el evento que Google Analytics usa para contactos de clientes
+      trackEvent("generate_lead", { event_type: data.eventType });
 
       toast.success("¡Mensaje enviado con éxito!", {
         description: "Nos pondremos en contacto contigo pronto."

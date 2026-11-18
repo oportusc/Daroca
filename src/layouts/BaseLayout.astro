@@ -2,6 +2,8 @@
 import { Image, getImage } from "astro:assets";
 import { Menu, X, Instagram, Mail, MessageCircle } from "lucide-react";
 import { site, navItems } from "../config/site";
+import Analytics from "../components/Analytics.astro";
+import CookieBanner from "../components/CookieBanner.astro";
 import "../styles/index.css";
 
 import logo from "../assets/logo_daroca_azul.png";
@@ -80,6 +82,8 @@ const jsonLd = {
     />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <Analytics />
   </head>
 
   <body>
@@ -217,12 +221,25 @@ const jsonLd = {
             style="color: #4a4a46; box-shadow: inset 0 1px 0 rgba(42, 143, 143, 0.15)"
           >
             <p>&copy; {new Date().getFullYear()} {site.name}. Todos los derechos reservados.</p>
+            <button
+              type="button"
+              data-cookie-settings
+              class="mt-1 underline underline-offset-2 hover:text-[var(--primary)]"
+            >
+              Preferencias de cookies
+            </button>
           </div>
         </div>
       </footer>
     </div>
 
+    <CookieBanner />
+
     <script>
+      import { trackContactClicks } from "../scripts/analytics";
+
+      trackContactClicks();
+
       const button = document.getElementById("mobile-menu-button");
       const menu = document.getElementById("mobile-menu");
 
